@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <% if (appName && name ) { %>
+    <h1>welcome to <%= appName %></h1>
+    <p>by <%= name %></p>
+    <% } else { %>
+    <h1>welcome to application</h1>
+    <p>by sharathmohan.com</p>
+    <% } %> <% if (footer) { %>
+    <p>footer : <%= footer %></p>
+    <% } else { %>
+    <p>empty footer</p>
+    <% } %>
+  </body>
+</html>
