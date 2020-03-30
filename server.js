@@ -10,7 +10,6 @@ const cookieParser = require("cookie-parser");
 const expressSession = require("express-session");
 const mongoose = require("./config/mongooseConnection");
 const MongoStore = require("connect-mongo")(expressSession);
-const passport = require("passport");
 
 // importing node.js dependancies
 const path = require("path");
@@ -18,6 +17,7 @@ const fs = require("fs");
 
 // importing application dependacies
 const root = require("./Routes/root");
+const auth = require("./lib/auth");
 
 // some app livel configurations
 require("dotenv").config({ path: "./configurations.env" });
@@ -33,18 +33,14 @@ app.use(
     store: new MongoStore({ mongooseConnection: mongoose.connection })
   })
 );
-passport.initialize();
-passport.session();
+app.use(auth.initialize);
+app.use(auth.session);
+app.use(auth.setUser);
 
 // view engine configuration
 app.set("view engine", "ejs");
 app.set("views", "./views");
 ejs.cache = new LRU(100);
-
-// app level variables
-app.locals.appName = "pro express app";
-app.locals.name = "sharath m r";
-app.locals.footer = `copyright @${new Date().getUTCFullYear()} reserved`;
 
 // app middlewares
 
@@ -58,6 +54,7 @@ app.use((req, res, next) => {
 });
 
 app.use((err, req, res, next) => {
+  console.log(err);
   // 500 errors
   const status = err.status || 500;
   res.status(status);
